@@ -1,8 +1,11 @@
 import { useState } from "react";
-function TaskCreate({ onCreate, task, taskFormUpdate }) {
+function TaskCreate({ onCreate, onUpdate, task, taskFormUpdate }) {
+ 
   /***** Update ******/
-  const [title, setTitle] = useState("");
-  const [taskDesc, setTaskDesc] = useState("");
+  const [title, setTitle] = useState(!taskFormUpdate ? "" : task.title);
+  const [taskDesc, setTaskDesc] = useState(
+    !taskFormUpdate ? "" : task.taskDesc
+  );
   const handleChange = (event) => {
     setTitle(event.target.value);
   };
@@ -17,21 +20,9 @@ function TaskCreate({ onCreate, task, taskFormUpdate }) {
   };
 
   /***** Update ******/
-  const [titleUpdate, setTitleUpdate] = useState(
-    !taskFormUpdate ? "" : task.title
-  );
-  const [taskDescUpdate, setTaskDescUpdate] = useState(
-    !taskFormUpdate ? "" : task.taskDesc
-  );
-  const handleUpdateChange = (event) => {
-    setTitleUpdate(event.target.value);
-  };
-  const handleTaskUpdateChange = (event) => {
-    setTaskDescUpdate(event.target.value);
-  };
   const handleUpdateSubmit = (event) => {
     event.preventDefault();
-    onCreate(titleUpdate, taskDescUpdate, taskFormUpdate);
+    onUpdate(task);
   };
 
   const handleUpdateCancel = (event) => {
@@ -46,29 +37,23 @@ function TaskCreate({ onCreate, task, taskFormUpdate }) {
           <form className="task-form-update">
             <label className="task-label-update">Başlık</label>
             <input
-              value={titleUpdate}
-              onChange={handleUpdateChange}
+              value={title}
+              onChange={handleChange}
               className="task-input-update"
             ></input>
             <label className="task-label-update">Task Giriniz</label>
             <textarea
-              value={taskDescUpdate}
-              onChange={handleTaskUpdateChange}
+              value={taskDesc}
+              onChange={handleTaskChange}
               className="task-input-update"
               rows={3}
             ></textarea>
 
-            <div className='button-update-group'>
-              <button
-                onClick={handleUpdateCancel}
-                className="btn-edit-cancel"
-              >
+            <div className="button-update-group">
+              <button onClick={handleUpdateCancel} className="btn-edit-cancel">
                 İptal
               </button>
-              <button
-                onClick={handleUpdateSubmit}
-                className="btn-edit-save"
-              >
+              <button onClick={handleUpdateSubmit} className="btn-edit-save">
                 Düzenle
               </button>
             </div>
