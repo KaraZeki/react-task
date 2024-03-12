@@ -1,7 +1,8 @@
-import { useState } from "react";
-function TaskCreate({ onCreate, onUpdate, task, taskFormUpdate }) {
+import { useContext, useState } from "react";
+import TaskContext from "../context/task";
+function TaskCreate({task, taskFormUpdate }) {
  
-  /***** Update ******/
+  const {createTask,updateTask}=useContext(TaskContext);
   const [title, setTitle] = useState(!taskFormUpdate ? "" : task.title);
   const [taskDesc, setTaskDesc] = useState(
     !taskFormUpdate ? "" : task.taskDesc
@@ -14,7 +15,7 @@ function TaskCreate({ onCreate, onUpdate, task, taskFormUpdate }) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    onCreate(title, taskDesc);
+    createTask(title, taskDesc);
     setTitle("");
     setTaskDesc("");
   };
@@ -22,12 +23,12 @@ function TaskCreate({ onCreate, onUpdate, task, taskFormUpdate }) {
   /***** Update ******/
   const handleUpdateSubmit = (event) => {
     event.preventDefault();
-    onUpdate(task);
+    task.title=title;
+    task.taskDesc=taskDesc;
+    updateTask(task);
   };
 
-  const handleUpdateCancel = (event) => {
-    event.preventDefault();
-  };
+
 
   return (
     <div>
@@ -50,9 +51,7 @@ function TaskCreate({ onCreate, onUpdate, task, taskFormUpdate }) {
             ></textarea>
 
             <div className="button-update-group">
-              <button onClick={handleUpdateCancel} className="btn-edit-cancel">
-                İptal
-              </button>
+             
               <button onClick={handleUpdateSubmit} className="btn-edit-save">
                 Düzenle
               </button>

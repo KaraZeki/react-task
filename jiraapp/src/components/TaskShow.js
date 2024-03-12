@@ -1,22 +1,23 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import TaskCreate from "./TaskCreate";
+import TaskContext from "../context/task";
 
-function TaskShow({ task, onDelete, onUpdate }) {
+function TaskShow({ task}) {
+
+  const {deleteTaskById}=useContext(TaskContext);
   const [showEdit, setShowEdit] = useState(false);
   const handleDetele = () => {
-    onDelete(task.id);
+    deleteTaskById(task.id);
   };
   const handleUpdate = () => {
     setShowEdit(!showEdit);
   };
 
-  const updateTask = (taks) => {
-    onUpdate(taks)
-  };
+
   return (
     <div className="tasDiv">
       {showEdit ? (
-        <TaskCreate onUpdate={updateTask} task={task}  taskFormUpdate={true} ></TaskCreate>
+        <TaskCreate task={task}  taskFormUpdate={true}></TaskCreate>
       ) : (
         <div>
           <h3>Görevleriniz </h3>
